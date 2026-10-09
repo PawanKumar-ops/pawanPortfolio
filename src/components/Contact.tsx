@@ -1,47 +1,36 @@
+
+import { Icon } from "@iconify/react"
 import { to, wrap, BlurText, FadeUp, Roll } from "../lib/ui"
 
 function SocialIcon({ kind }: { kind: "x" | "ig" | "in" | "yt" }) {
-  const p = {
-    fill: "none",
-    stroke: "#111",
-    strokeWidth: 1.7,
-    strokeLinecap: "round" as const,
-    strokeLinejoin: "round" as const,
+  const icons = {
+    x: "ri:twitter-x-fill",
+    ig: "ri:instagram-line",
+    in: "basil:linkedin-outline",
+    yt: "ant-design:youtube-outlined",
   }
+
   return (
     <a
       href="#"
+      aria-label={{
+        x: "X",
+        ig: "Instagram",
+        in: "LinkedIn",
+        yt: "YouTube",
+      }[kind]}
       className="flex h-[50px] w-[50px] items-center justify-center rounded-[8px] bg-black/10 transition-colors hover:bg-black/20"
     >
-      <svg width="22" height="22" viewBox="0 0 24 24">
-        {kind === "x" && (
-          <path
-            {...p}
-            d="M4 4l6.5 8.6L4.3 20M20 4l-6.2 6.9M4 4h4.2L20 20h-4.2z"
-          />
-        )}
-        {kind === "ig" && (
-          <g {...p}>
-            <rect x="3.5" y="3.5" width="17" height="17" rx="5" />
-            <circle cx="12" cy="12" r="4" />
-            <circle cx="17.3" cy="6.7" r=".6" fill="#111" />
-          </g>
-        )}
-        {kind === "in" && (
-          <g {...p}>
-            <path d="M5 10v9M5 5.5v.2M10 19v-9M10 13.5c0-2 1.4-3.5 3.3-3.5S16.5 11.3 16.5 13.3V19" />
-          </g>
-        )}
-        {kind === "yt" && (
-          <g {...p}>
-            <rect x="3" y="6" width="18" height="12" rx="4" />
-            <path d="M10.5 9.5l4 2.5-4 2.5z" />
-          </g>
-        )}
-      </svg>
+      <Icon
+        icon={icons[kind]}
+        width={22}
+        height={22}
+        className="text-[#111]"
+      />
     </a>
   )
 }
+
 
 export default function Contact() {
   const field =
