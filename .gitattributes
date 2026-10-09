@@ -142,5 +142,10 @@
 *.stp                filter=lfs diff=lfs merge=lfs -text
 *.iges               filter=lfs diff=lfs merge=lfs -text
 *.stl                filter=lfs diff=lfs merge=lfs -text
+
+# Vercel serves files from public/ directly. Keep these deployed assets as
+# regular Git blobs so production does not receive Git LFS pointer files.
+public/portrait/*.png -filter -diff -merge
+public/projects/*.png -filter -diff -merge
 *.nc                 filter=lfs diff=lfs merge=lfs -text
 *.mat                filter=lfs diff=lfs merge=lfs -text
