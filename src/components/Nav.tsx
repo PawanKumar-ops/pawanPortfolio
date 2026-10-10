@@ -345,11 +345,11 @@ export default function Nav() {
           at the end of the page, then widens into the AI input (reversed on the way back) */}
       <div className="pointer-events-none fixed inset-0 z-50">
         <nav
-          className="pointer-events-auto absolute left-1/2"
+          className="pointer-events-auto absolute left-1/2 box-border max-w-[calc(100vw-24px)]"
           style={{
             top: docked ? "calc(100% - 38px)" : "38px",
             transform: docked ? "translate(-50%, -100%)" : "translate(-50%, 0)",
-            width: docked ? "min(680px, calc(100% - 32px))" : "min(400px, calc(100% - 32px))",
+            width: docked ? "min(680px, calc(100vw - 24px))" : "min(400px, calc(100vw - 24px))",
             transition: docked
               ? `top .8s ${EASE}, transform .8s ${EASE}, width .7s ${EASE} .55s`
               : `width .55s ${EASE}, top .8s ${EASE} .35s, transform .8s ${EASE} .35s`,
@@ -395,7 +395,7 @@ export default function Nav() {
             </div>
 
             <form onSubmit={onSubmit} className="flex h-[73px] items-center gap-[14px] pl-[21px] pr-[14px] max-[640px]:h-[64px] max-[640px]:gap-[10px] max-[640px]:pl-[16px] max-[640px]:pr-[10px]">
-              <a href={to("/")} className="shrink-0 text-[28px] max-[640px]:text-[24px] font-bold leading-none tracking-[-0.06em]">
+              <a href={to("/")} className="shrink-0 text-[28px] max-[640px]:text-[22px] font-bold leading-none tracking-[-0.06em]">
                 Pawan
               </a>
               <span
@@ -435,7 +435,7 @@ export default function Nav() {
                 onClick={hasText ? undefined : () => (chatOpen ? closeChat() : setMenuOpen((o) => !o))}
                 aria-label={hasText ? "Send" : chatOpen ? "Close chat" : "Menu"}
                 disabled={thinking && hasText}
-                className="relative flex h-[44px] w-[55px] shrink-0 items-center justify-center rounded-[8px] bg-cream text-ink transition-transform duration-300 active:scale-95"
+                className="relative flex h-[44px] w-[55px] shrink-0 items-center justify-center rounded-[8px] bg-cream text-ink transition-transform duration-300 active:scale-95 max-[640px]:h-[40px] max-[640px]:w-[44px]"
               >
                 {/* dots → menu, X → close, arrow → send */}
                 <span

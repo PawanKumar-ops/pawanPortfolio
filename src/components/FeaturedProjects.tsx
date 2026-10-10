@@ -4,7 +4,7 @@ import { ProjectCard, projects } from "./ProjectCard"
 export default function FeaturedProjects() {
   return (
     <section id="works" className={`${wrap} mt-[160px]`}>
-      <div className="flex items-end justify-between">
+      <div className="flex items-end justify-between max-[810px]:flex-col max-[810px]:items-start max-[810px]:gap-6">
         <BlurText
           text={"Featured\nProjects"}
           className="text-[100px] font-semibold leading-[0.97] tracking-[-0.04em] max-[810px]:text-[64px]"

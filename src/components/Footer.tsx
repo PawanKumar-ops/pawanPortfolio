@@ -25,9 +25,9 @@ export default function Footer() {
       >
         <BlurText
           text={"Ideas Into\nDigital\nReality."}
-          className="w-[575px] text-[80px] font-semibold leading-[1.05] tracking-[-0.04em] max-[810px]:text-[56px]"
+          className="w-[575px] max-[900px]:w-full max-[900px]:max-w-full text-[80px] font-semibold leading-[1.05] tracking-[-0.04em] max-[810px]:text-[56px]"
         />
-        <div className="w-[525px] pt-[82px] max-[900px]:pt-0">
+        <div className="w-[525px] max-[900px]:w-full max-[900px]:max-w-full pt-[82px] max-[900px]:pt-0">
           <h4 className="text-[32px] font-medium tracking-[-0.04em]">
             /Quick links
           </h4>

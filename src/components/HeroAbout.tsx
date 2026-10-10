@@ -123,6 +123,8 @@ function Bolt() {
 export default function HeroAbout() {
   const rootRef = useRef<HTMLDivElement>(null)
   const heroRef = useRef<HTMLElement>(null)
+  const titleRef = useRef<HTMLHeadingElement>(null)
+  const bottomRef = useRef<HTMLDivElement>(null)
   const targetRef = useRef<HTMLDivElement>(null)
   const cardRef = useRef<HTMLDivElement>(null)
   const [loaded, setLoaded] = useState(false)
@@ -140,7 +142,10 @@ export default function HeroAbout() {
       const target = targetRef.current
       const card = cardRef.current
       if (!root || !hero || !target || !card) return
-      const rootTop = root.getBoundingClientRect().top + window.scrollY
+
+      const mobile = window.innerWidth < 640
+      const rootRect = root.getBoundingClientRect()
+      const rootTop = rootRect.top + window.scrollY
       const heroH = hero.offsetHeight
       const tRect = target.getBoundingClientRect()
       const tTop = tRect.top + window.scrollY - rootTop
@@ -148,17 +153,45 @@ export default function HeroAbout() {
       const tH = tRect.height
       const rootW = root.offsetWidth
 
-      // small card in hero: 250x285, bottom 37px above hero bottom
-      const sW = Math.min(250, tW / 2)
-      const sH = sW * 1.14
+      let sW = Math.min(250, tW / 2)
+      let sH = sW * 1.14
       const sCx = rootW / 2
-      const sCy = heroH - 37 - sH / 2
+      let sCy = heroH - 37 - sH / 2
+
+      if (mobile) {
+        const titleBottom = titleRef.current
+          ? titleRef.current.getBoundingClientRect().bottom - rootRect.top
+          : heroH * 0.4
+
+        const bottomTop = bottomRef.current
+          ? bottomRef.current.getBoundingClientRect().top - rootRect.top
+          : heroH - 80
+
+        const gap = Math.max(120, bottomTop - titleBottom - 40)
+        sH = Math.min(gap, tW * 0.62 * 1.14)
+        sW = sH / 1.14
+        sCy = (titleBottom + bottomTop) / 2
+      }
+
       const eCx = tRect.left + tW / 2 - root.getBoundingClientRect().left
       const eCy = tTop + tH / 2
 
-      const endScroll = Math.max(1, tTop + rootTop - 51)
-      const p = clamp(window.scrollY / endScroll)
+
+      const startScroll = rootTop
+      const landingOffset = window.innerHeight * 0.15
+
+      const endScroll = Math.max(
+        startScroll + 1,
+        rootTop + tTop - landingOffset
+      )
+
+      const p = clamp(
+        (window.scrollY - startScroll) /
+        (endScroll - startScroll)
+      )
+
       const e = easeInOut(p)
+
 
       const cx = lerp(sCx, eCx, e)
       const cy = lerp(sCy, eCy, e)
@@ -206,7 +239,7 @@ export default function HeroAbout() {
   )
 
   return (
-    <div ref={rootRef} className="relative" id="home">
+    <div ref={rootRef} className="relative overflow-x-clip" id="home">
 
       {/* Travelling portrait card */}
       <div
@@ -258,30 +291,25 @@ export default function HeroAbout() {
       {/* Hero */}
       <section
         ref={heroRef}
-        className="relative h-screen"
-        style={{ minHeight: "max(560px, calc(922 * var(--u)))" }}
+        className="relative h-screen h-[100svh] min-h-[max(560px,calc(922*var(--u)))] max-[640px]:min-h-[620px]"
       >
         <div className={`${wrap} relative h-full`}>
+
           <h1
-            className="relative text-center font-bold uppercase leading-[0.9] tracking-[-0.02em] text-ink"
-            style={{
-              fontSize: "calc(218 * var(--u))",
-              paddingTop: "max(150px, calc(262 * var(--u)))",
-            }}
+            ref={titleRef}
+            className="relative z-20 pt-[max(150px,calc(262*var(--u)))] text-center text-[calc(218*var(--u))] font-bold uppercase leading-[0.9] tracking-[-0.02em] text-ink max-[640px]:pt-[120px] max-[640px]:text-[12.5vw] max-[640px]:tracking-[-0.03em] max-[640px]:leading-[0.92]"
           >
+
             {titleLine("Fullstack", 0.1)}
             {titleLine("Developer", 0.22)}
           </h1>
 
+
           <Draggable
-            className="left-0"
-            style={{
-              top: "max(130px, calc(210 * var(--u)))",
-              width: "calc(128 * var(--u))",
-              height: "calc(128 * var(--u))",
-            }}
+            className="left-0 top-[max(130px,calc(210*var(--u)))] h-[calc(128*var(--u))] w-[calc(128*var(--u))] max-[640px]:top-[92px] max-[640px]:h-[44px] max-[640px]:w-[44px]"
             rotate={16}
           >
+
             <div
               style={{
                 opacity: loaded ? 1 : 0,
@@ -292,15 +320,12 @@ export default function HeroAbout() {
               <Sparkle />
             </div>
           </Draggable>
+
           <Draggable
-            style={{
-              right: "calc(10 * var(--u))",
-              top: "calc(max(150px, calc(262 * var(--u))) + 350 * var(--u))",
-              width: "calc(80 * var(--u))",
-              height: "calc(120 * var(--u))",
-            }}
+            className="right-[calc(10*var(--u))] top-[calc(max(150px,calc(262*var(--u)))+350*var(--u))] h-[calc(120*var(--u))] w-[calc(80*var(--u))] max-[640px]:right-1 max-[640px]:top-[calc(120px+30vw)] max-[640px]:h-[48px] max-[640px]:w-[32px]"
             rotate={0}
           >
+
             <div
               style={{
                 opacity: loaded ? 1 : 0,
@@ -313,8 +338,8 @@ export default function HeroAbout() {
           </Draggable>
 
           <div
-            className="absolute inset-x-0 flex items-end justify-between"
-            style={{ bottom: "calc(30 * var(--u))" }}
+            ref={bottomRef}
+            className="absolute inset-x-0 bottom-[calc(30*var(--u))] flex items-end justify-between max-[640px]:bottom-6"
           >
             <h2
               className="font-semibold leading-none tracking-[-0.04em]"
@@ -331,7 +356,7 @@ export default function HeroAbout() {
               className="leading-none tracking-[-0.05em]"
               style={{
                 fontSize: "max(12px, calc(20 * var(--u)))",
-                paddingBottom: "calc(12 * var(--u))",
+                paddingBottom: "max(4px, calc(12 * var(--u)))",
                 opacity: loaded ? 1 : 0,
                 transition: "opacity 1s .7s",
               }}
