@@ -14,7 +14,6 @@
 
 html {
   background: #faf7f3;
-  overflow-x: hidden;
 }
 
 body {
@@ -24,7 +23,7 @@ body {
   font-family: 'Archivo', sans-serif;
   letter-spacing: -0.02em;
   -webkit-font-smoothing: antialiased;
-  overflow-x: hidden;
+  overflow-x: clip;
 }
 
 /* Film grain overlay */
